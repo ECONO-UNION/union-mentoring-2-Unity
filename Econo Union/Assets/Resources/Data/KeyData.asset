@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: KeyData
   m_EditorClassIdentifier: Assembly-CSharp::KeyData
   keys:
-  - commandType: 5
+  - commandType: 0
     code: 273
   - commandType: 1
     code: 276
@@ -21,3 +21,5 @@ MonoBehaviour:
     code: 274
   - commandType: 3
     code: 275
+  - commandType: 5
+    code: 32
