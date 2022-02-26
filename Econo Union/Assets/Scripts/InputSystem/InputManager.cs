@@ -1,36 +1,98 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
-public partial class InputManager : MonoBehaviour
+
+public class InputManager : MonoBehaviour
 {
+    #region Fields
 
-    KeySetting KeySetting;
+    private static InputManager instance;
 
-    private int CurrentKeyState;
+    #endregion
+
+    #region Properties
+
+    public static InputManager Instance { 
+        get { return instance; }
+    }
+
+    public ControllerType _ControllerType;
+
+    #endregion
+
+    #region Enums
+
+    /// <summary>
+    /// ÀÔ·Â ÇÃ·§Æû Å¸ÀÔ
+    /// </summary>
+    [Flags]
+    public enum ControllerType
+    {     
+        Keyboard_Touch = 0,
+        
+        Touch = 1,
+        
+        Keyboard = 2,
+        
+        None = 3,
+    }
+
+    public enum InputState
+    {
+        Press,
+
+        Holding,
+
+        Release,
+    }
+
+    #endregion
+
+    #region Callbacks
 
     void Awake()
     {
-        KeySetting = new KeySetting();
+        if (instance == null)
+        {
+            instance = this;         
+        }
+        else
+            DestroyImmediate(this);
 
+        SetControllerType();
     }
 
-    // Start is called before the first frame update
     void Start()
     {
-        
+       
     }
 
-    void Update()
+    #endregion
+
+    #region Methods
+
+    public void SetControllerType()
     {
-        foreach(var keyInput in KeySetting.KeyInputSet)
+        int index = PlayerPrefs.GetInt("ControllerType");
+        var controllerTypes = Enum.GetValues(typeof(ControllerType));
+        _ControllerType = (ControllerType)controllerTypes.GetValue(index);
+        switch (_ControllerType)
         {
-            InputState inputState = keyInput.Value;
-            if (inputState.GetKeyDown)
-            {
-                CommandType cmdType = keyInput.Key.CommandType;
-                CommandManager.Instance.AddCommand(cmdType);
-            }
+            case ControllerType.Keyboard:
+                gameObject.AddComponent<KeyboardController>();
+                break;
+            case ControllerType.Touch:
+                gameObject.AddComponent<MouseController>();
+                break;
+            case ControllerType.Keyboard_Touch:
+                gameObject.AddComponent<MouseController>();
+                gameObject.AddComponent<KeyboardController>();
+                break;              
         }
     }
+
+    #endregion
+
 }
