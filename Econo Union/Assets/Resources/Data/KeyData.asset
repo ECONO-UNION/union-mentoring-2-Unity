@@ -9,17 +9,37 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 0}
+  m_Script: {fileID: 11500000, guid: 2765ccc433791104c9798e349f0ba875, type: 3}
   m_Name: KeyData
-  m_EditorClassIdentifier: Assembly-CSharp::KeyData
-  keys:
-  - commandType: 0
-    code: 273
-  - commandType: 1
+  m_EditorClassIdentifier: 
+  KeyInfos:
+  - name: left
     code: 276
-  - commandType: 2
-    code: 274
-  - commandType: 3
+    index: 1
+    Event_Type: 2
+    _ContinuousCommand: 1
+  - name: right
     code: 275
-  - commandType: 5
+    index: 2
+    Event_Type: 2
+    _ContinuousCommand: 1
+  - name: up
+    code: 273
+    index: 3
+    Event_Type: 2
+    _ContinuousCommand: 1
+  - name: down
+    code: 274
+    index: 4
+    Event_Type: 2
+    _ContinuousCommand: 1
+  - name: attack
+    code: 122
+    index: 5
+    Event_Type: 0
+    _ContinuousCommand: 1
+  - name: jump
     code: 32
+    index: 6
+    Event_Type: 1
+    _ContinuousCommand: 0
