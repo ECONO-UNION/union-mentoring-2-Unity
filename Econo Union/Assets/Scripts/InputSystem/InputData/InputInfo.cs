@@ -1,28 +1,25 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 using Easy.Events.Delegate;
 
-[System.Serializable]
-public class MouseInfo
+[Serializable]
+public class InputInfo
 {
     [SerializeField]
-    private string name;
+    protected string name;
 
     [SerializeField]
-    private int code;
+    protected int index;
 
     [SerializeField]
-    private int index;
+    protected EVENT_TYPE Event_Type;
 
     [SerializeField]
-    private EVENT_TYPE Event_Type;
+    protected bool _ContinuousCommand;
 
-    [SerializeField]
-    private bool _ContinuousCommand;
     public string Name => name;
-
-    public int Code => code;
 
     /// <summary>
     /// 입력 상태를 판별하기 위한 비트 정수
@@ -31,13 +28,8 @@ public class MouseInfo
 
     public EVENT_TYPE EVENT_TYPE => Event_Type;
 
+    /// <summary>
+    /// 홀딩 상태를 유지할 수 있는지 판별하기 위한 변수
+    /// </summary>
     public bool ContinuousCommand => _ContinuousCommand;
-}
-
-[CreateAssetMenu(menuName = "InputData/MouseData")]
-public class MouseData : ScriptableObject
-{
-    private List<MouseInfo> mouseInfos;
-
-    public List<MouseInfo> MouseInfos;
 }

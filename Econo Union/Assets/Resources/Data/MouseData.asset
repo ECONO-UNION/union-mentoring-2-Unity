@@ -12,3 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 915354d963d14c5488409aa78082b76f, type: 3}
   m_Name: MouseData
   m_EditorClassIdentifier: 
+  MouseInfos:
+  - name: Mouse X
+    code: 0
+    index: 1
+    Event_Type: 0
+    _ContinuousCommand: 1
+  - name: Mouse Y
+    code: 1
+    index: 2
+    Event_Type: 2
+    _ContinuousCommand: 1

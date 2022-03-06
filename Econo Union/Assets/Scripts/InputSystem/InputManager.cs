@@ -10,6 +10,16 @@ public class InputManager : MonoBehaviour
 
     private static InputManager instance;
 
+    /// <summary>
+    /// 현재 사용 중인 컨트롤러 타입 리스트
+    /// </summary>
+    public List<ControllerType> ControllerTypeList = new List<ControllerType>();
+
+    /// <summary>
+    /// 컨트롤러 타입에 따른 Controller 객체 딕셔너리
+    /// </summary>
+    private Dictionary<ControllerType, Controller> ControllerTable = new Dictionary<ControllerType, Controller>();
+
     #endregion
 
     #region Properties
@@ -17,8 +27,6 @@ public class InputManager : MonoBehaviour
     public static InputManager Instance { 
         get { return instance; }
     }
-
-    public ControllerType _ControllerType;
 
     #endregion
 
@@ -30,13 +38,15 @@ public class InputManager : MonoBehaviour
     [Flags]
     public enum ControllerType
     {     
-        Keyboard_Touch = 0,
+        Keyboard = 0,
         
-        Touch = 1,
+        Mouse = 1,
         
-        Keyboard = 2,
+        Touch = 2,
         
-        None = 3,
+        JoyStick = 3, 
+
+        None,
     }
 
     public enum InputState
@@ -59,40 +69,88 @@ public class InputManager : MonoBehaviour
             instance = this;         
         }
         else
-            DestroyImmediate(this);
-
-        SetControllerType();
+            Destroy(this);
     }
 
     void Start()
     {
-       
+        CreateController();
+    }
+
+    void Update()
+    {
+        foreach(var controllerPair in ControllerTable)
+        {
+            Controller controller = controllerPair.Value;
+            if (controller.IsRunning)
+            {
+                controller.Update();
+            }
+        }
     }
 
     #endregion
 
     #region Methods
 
-    public void SetControllerType()
+    /// <summary>
+    /// 모든 컨트롤러를 생성하는 메소드 
+    /// </summary>
+    private void CreateController()
     {
-        int index = PlayerPrefs.GetInt("ControllerType");
-        var controllerTypes = Enum.GetValues(typeof(ControllerType));
-        _ControllerType = (ControllerType)controllerTypes.GetValue(index);
-        switch (_ControllerType)
+        ControllerTable.Add(ControllerType.Keyboard, new KeyboardController());
+        ControllerTable.Add(ControllerType.Mouse, new MouseController());
+        ControllerTable.Add(ControllerType.Touch, new TouchController());
+        ControllerTable.Add(ControllerType.JoyStick, new JoystickController());
+
+        ExecuteController();
+    }
+
+    /// <summary>
+    /// 플랫폼별로 컨트롤러를 실행하도록 하는 메소드
+    /// </summary>
+    public void ExecuteController()
+    {
+        switch (Application.platform)
         {
-            case ControllerType.Keyboard:
-                gameObject.AddComponent<KeyboardController>();
+            case RuntimePlatform.WindowsEditor:
+            case RuntimePlatform.WindowsPlayer:
+                StartController(ControllerType.Keyboard);
+                StartController(ControllerType.Mouse);
                 break;
-            case ControllerType.Touch:
-                gameObject.AddComponent<MouseController>();
+            case RuntimePlatform.Android:
+            case RuntimePlatform.IPhonePlayer:
+                StartController(ControllerType.Touch);
                 break;
-            case ControllerType.Keyboard_Touch:
-                gameObject.AddComponent<MouseController>();
-                gameObject.AddComponent<KeyboardController>();
-                break;              
+            case RuntimePlatform.XboxOne:
+            case RuntimePlatform.PS4:
+            case RuntimePlatform.PS5:
+                StartController(ControllerType.JoyStick);
+                break;
         }
     }
 
-    #endregion
+    /// <summary>
+    /// 특정 컨트롤러를 실행하도록 하는 메소드
+    /// </summary>
+    public void StartController(ControllerType controllerType)
+    {
+        if (!ControllerTable.ContainsKey(controllerType)) return;
 
+        ControllerTable[controllerType].StartController();
+        
+    }
+
+    /// <summary>
+    /// 특정 컨트롤러를 중지하도록 하는 메소드
+    /// </summary>
+    public void StopController(ControllerType controllerType)
+    {
+        if (!ControllerTable.ContainsKey(controllerType)) return;
+
+        ControllerTable[controllerType].StopController();
+    }
+
+    #endregion
 }
+
