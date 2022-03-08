@@ -1,4 +1,4 @@
-using System.Collections;
+Ôªøusing System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Easy.Events.Delegate;
@@ -8,17 +8,17 @@ public class MouseController : Controller
     #region Fields
 
     /// <summary>
-    /// ∏∂øÏΩ∫ µ•¿Ã≈Õ ∆ƒ¿œ ∞Ê∑Œ
+    /// ÎßàÏö∞Ïä§ Îç∞Ïù¥ÌÑ∞ ÌååÏùº Í≤ΩÎ°ú
     /// </summary>
     public const string MouseDataPath = "Data/MouseData";
 
     /// <summary>
-    /// ∏∂øÏΩ∫ ¡§∫∏ µ•¿Ã≈Õ 
+    /// ÎßàÏö∞Ïä§ Ï†ïÎ≥¥ Îç∞Ïù¥ÌÑ∞ 
     /// </summary>
     private MouseData mouseData;
 
     /// <summary>
-    /// «ˆ¿Á ¿‘∑¬ ¡ﬂ¿Œ ∏∂øÏΩ∫ ªÛ≈¬∏¶ æÀ∑¡¡÷¥¬ ∫Øºˆ
+    /// ÌòÑÏû¨ ÏûÖÎ†• Ï§ëÏù∏ ÎßàÏö∞Ïä§ ÏÉÅÌÉúÎ•º ÏïåÎ†§Ï£ºÎäî Î≥ÄÏàò
     /// </summary>
     int CurrentMouseState;
 
@@ -39,6 +39,14 @@ public class MouseController : Controller
             Debug.LogError("Can't load MouseData file");
             return;
         }
+
+        foreach (var mouseInfo in mouseData.MouseInfos)
+        {
+            if (mouseInfo.CommandType == InputManager.CommandType.Move)
+                MoveInputInfos.Add(mouseInfo);
+            else
+                NonMoveInputInfos.Add(mouseInfo);
+        }
     }
 
     #endregion
@@ -47,21 +55,28 @@ public class MouseController : Controller
 
     public override void Update()
     {
-        OnCheckInput();
+        if(isRunning)
+            OnCheckNonMoveInput();
     }
 
-    public override void OnCheckInput()
+    public override void FixedUpdate()
     {
-        foreach (var mouseInfo in mouseData.MouseInfos)
+        if (isRunning)
+            OnCheckMoveInput();
+    }
+
+    protected override void OnCheckMoveInput()
+    {
+        foreach (var inputInfo in MoveInputInfos)
         {
+            MouseInfo mouseInfo = (MouseInfo)inputInfo;
             var mouseCode = mouseInfo.Code;
-            var mouseBit = mouseInfo.Index;
 
             if (Input.GetMouseButtonUp(mouseCode))
             {
-                OnKeepInput(mouseInfo);
+                OnPressInput(mouseInfo);
             }
-            else if (Input.GetMouseButton(mouseCode) && mouseInfo.ContinuousCommand)
+            else if (Input.GetMouseButton(mouseCode) && mouseInfo.CanHolding)
             {
                 OnKeepInput(mouseInfo);
             }
@@ -72,28 +87,26 @@ public class MouseController : Controller
         }
     }
 
-    protected override void OnPressInput(InputInfo inputInfo)
+    protected override void OnCheckNonMoveInput()
     {
-        EventManager.Instance.PostNotification(inputInfo.EVENT_TYPE, GameManager.Player);
-    }
-
-    protected override void OnKeepInput(InputInfo inputInfo)
-    {
-        if (inputInfo.EVENT_TYPE == EVENT_TYPE.MOVE)
+        foreach (var inputInfo in NonMoveInputInfos)
         {
-            MouseX = Input.GetAxis("Mouse X");
-            MouseY = Input.GetAxis("Mouse Y");
-            EventManager.Instance.PostNotification(inputInfo.EVENT_TYPE, GameManager.Player, new object[] { MouseX, MouseY });
-        }
-        else
-        {
-            EventManager.Instance.PostNotification(inputInfo.EVENT_TYPE, GameManager.Player);
-        }
-    }
+            MouseInfo mouseInfo = (MouseInfo)inputInfo;
+            var mouseCode = mouseInfo.Code;
 
-    protected override void OnReleaseInput(InputInfo inputInfo)
-    {
-        
+            if (Input.GetMouseButtonUp(mouseCode))
+            {
+                OnKeepInput(mouseInfo);
+            }
+            else if (Input.GetMouseButton(mouseCode) && mouseInfo.CanHolding)
+            {
+                OnKeepInput(mouseInfo);
+            }
+            else if (Input.GetMouseButtonUp(mouseCode))
+            {
+                OnReleaseInput(mouseInfo);
+            }
+        }
     }
 
     #endregion

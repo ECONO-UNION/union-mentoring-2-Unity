@@ -9,25 +9,20 @@ public class TouchController : Controller
     public override void Update()
     {
         if (isRunning)
-            OnCheckInput();
+            OnCheckNonMoveInput();
+    }
+    public override void FixedUpdate()
+    {
+        if (isRunning)
+            OnCheckMoveInput();
     }
 
-    public override void OnCheckInput()
+    protected override void OnCheckMoveInput()
     {
         
     }
 
-    protected override void OnKeepInput(InputInfo inputInfo)
-    {
-        
-    }
-
-    protected override void OnPressInput(InputInfo inputInfo)
-    {
-       
-    }
-
-    protected override void OnReleaseInput(InputInfo inputInfo)
+    protected override void OnCheckNonMoveInput()
     {
         
     }

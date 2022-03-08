@@ -1,4 +1,4 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,6 +8,16 @@ public abstract class Controller
 
     protected bool isRunning;
 
+    /// <summary>
+    /// ì´ë™ ì»¤ë§¨ë“œ ì •ë³´ ë¦¬ìŠ¤íŠ¸
+    /// </summary>
+    protected List<InputInfo> MoveInputInfos = new List<InputInfo>();
+
+    /// <summary>
+    /// ì´ë™ ì»¤ë§¨ë“œë¥¼ ì œì™¸í•œ ì •ë³´ ë¦¬ìŠ¤íŠ¸
+    /// </summary>
+    protected List<InputInfo> NonMoveInputInfos = new List<InputInfo>();
+
     #endregion
 
     #region Properties
@@ -16,38 +26,57 @@ public abstract class Controller
 
     #endregion
 
+    #region Delegates
+
+    #endregion
+
     #region Callbacks
 
     /// <summary>
-    /// Æ¯Á¤ Å°¸¦ ÃÖÃÊ ÀÔ·Â½Ã ½ÇÇàµÇ´Â ¸Ş¼Òµå
+    /// íŠ¹ì • í‚¤ë¥¼ ìµœì´ˆ ì…ë ¥ì‹œ ì‹¤í–‰ë˜ëŠ” ë©”ì†Œë“œ
     /// </summary>
-    protected abstract void OnPressInput(InputInfo inputInfo);
+    protected virtual void OnPressInput(InputInfo inputInfo)
+    {
+        InputMapper mapper = InputManager.SelectMapper(inputInfo.CommandType);
+        mapper.OnSendPressInput(inputInfo);
+    }
 
     /// <summary>
-    /// Æ¯Á¤ Å°¸¦ ÀÔ·ÂÇÏ´Â µ¿¾È ½ÇÇàµÇ´Â ¸Ş¼Òµå
+    /// íŠ¹ì • í‚¤ë¥¼ ì…ë ¥í•˜ëŠ” ë™ì•ˆ ì‹¤í–‰ë˜ëŠ” ë©”ì†Œë“œ
     /// </summary>
-    protected abstract void OnKeepInput(InputInfo inputInfo);
+    protected virtual void OnKeepInput(InputInfo inputInfo)
+    {
+        InputMapper mapper = InputManager.SelectMapper(inputInfo.CommandType);
+        mapper.OnSendHoldingInput(inputInfo);
+    }
 
     /// <summary>
-    /// Æ¯Á¤ Å°¸¦ ¶¼´Â ¼ø°£ ½ÇÇàµÇ´Â ¸Ş¼Òµå
+    /// íŠ¹ì • í‚¤ë¥¼ ë–¼ëŠ” ìˆœê°„ ì‹¤í–‰ë˜ëŠ” ë©”ì†Œë“œ
     /// </summary>
-    protected abstract void OnReleaseInput(InputInfo inputInfo);
+    protected virtual void OnReleaseInput(InputInfo inputInfo)
+    {
+        InputMapper mapper = InputManager.SelectMapper(inputInfo.CommandType);
+        mapper.OnSendReleaseInput(inputInfo);
+    }
+
+    protected virtual void OnMoveInput(InputInfo inputInfo, float x, float y)
+    {
+        InputMapper mapper = InputManager.SelectMapper(inputInfo.CommandType);
+        mapper.OnMoveEventInput(inputInfo, x, y);
+    }
 
     /// <summary>
-    /// ¸Å ÇÁ·¹ÀÓ ¸¶´Ù ½ÇÇàµÇ´Â ¸Ş¼Òµå.
+    /// ë§¤ í”„ë ˆì„ ë§ˆë‹¤ ì‹¤í–‰ë˜ëŠ” ë©”ì†Œë“œ.
     /// </summary>
     public abstract void Update();
+    public abstract void FixedUpdate();
 
-    /// <summary>
-    /// ÀÔ·Â µ¥ÀÌÅÍÀÇ °¢ ÀÔ·Â Á¤º¸ÀÇ ÀÔ·Â »óÅÂ¸¦ È®ÀÎÇÏ´Â ¸Ş¼Òµå
-    /// </summary>
-    public abstract void OnCheckInput();
     #endregion
 
     #region Methods
 
     /// <summary>
-    /// ÄÁÆ®·Ñ·¯ ÀÔ·ÂÀ» ½ÃÀÛÇÏ´Â ¸Ş¼Òµå
+    /// ì»¨íŠ¸ë¡¤ëŸ¬ ì…ë ¥ì„ ì‹œì‘í•˜ëŠ” ë©”ì†Œë“œ
     /// </summary>
     public virtual void StartController()
     {
@@ -55,12 +84,22 @@ public abstract class Controller
     }
 
     /// <summary>
-    /// ÄÁÆ®·Ñ·¯ ÀÔ·ÂÀ» ÁßÁöÇÏ´Â ¸Ş¼Òµå
+    /// ì»¨íŠ¸ë¡¤ëŸ¬ ì…ë ¥ì„ ì¤‘ì§€í•˜ëŠ” ë©”ì†Œë“œ
     /// </summary>
     public virtual void StopController()
     {
         isRunning = false;
     }
+
+    /// <summary>
+    /// ì´ë™ ì»¤ë§¨ë“œ ì…ë ¥ ë°ì´í„°ì˜ ê° ì…ë ¥ ì •ë³´ì˜ ì…ë ¥ ìƒíƒœë¥¼ í™•ì¸í•˜ëŠ” ë©”ì†Œë“œ
+    /// </summary>
+    protected abstract void OnCheckMoveInput();
+
+    /// <summary>
+    /// ì´ë™ ì»¤ë§¨ë“œê°€ ì•„ë‹Œ ì…ë ¥ ë°ì´í„°ì˜ ê° ì…ë ¥ ì •ë³´ì˜ ì…ë ¥ ìƒíƒœë¥¼ í™•ì¸í•˜ëŠ” ë©”ì†Œë“œ
+    /// </summary>
+    protected abstract void OnCheckNonMoveInput();
 
     #endregion
 }

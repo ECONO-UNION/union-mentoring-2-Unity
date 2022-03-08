@@ -9,26 +9,22 @@ public class JoystickController : Controller
     public override void Update()
     {
         if (isRunning)
-            OnCheckInput();
+            OnCheckNonMoveInput();
     }
-    public override void OnCheckInput()
+    public override void FixedUpdate()
     {
-        
-    }
-
-    protected override void OnKeepInput(InputInfo inputInfo)
-    {
-        
+        if (isRunning)
+            OnCheckMoveInput();
     }
 
-    protected override void OnPressInput(InputInfo inputInfo)
+    protected override void OnCheckMoveInput()
     {
-        
+
     }
 
-    protected override void OnReleaseInput(InputInfo inputInfo)
+    protected override void OnCheckNonMoveInput()
     {
-        
+
     }
 
     #endregion

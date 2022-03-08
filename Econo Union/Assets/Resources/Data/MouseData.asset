@@ -13,13 +13,13 @@ MonoBehaviour:
   m_Name: MouseData
   m_EditorClassIdentifier: 
   MouseInfos:
-  - name: Mouse X
+  - name: Fire0
+    index: 0
+    commandType: 1
+    _ContinuousCommand: 1
     code: 0
-    index: 1
-    Event_Type: 0
-    _ContinuousCommand: 1
-  - name: Mouse Y
+  - name: Fire1
+    index: 0
+    commandType: 0
+    _ContinuousCommand: 0
     code: 1
-    index: 2
-    Event_Type: 2
-    _ContinuousCommand: 1

@@ -1,4 +1,4 @@
-using System.Collections;
+Ôªøusing System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Easy.Events.Delegate;
@@ -8,14 +8,19 @@ public class KeyboardController : Controller
     #region Fields
 
     /// <summary>
-    /// ≈∞ ¡§∫∏ µ•¿Ã≈Õ 
+    /// ÌÇ§ Ï†ïÎ≥¥ Îç∞Ïù¥ÌÑ∞ 
     /// </summary>
     private KeyData keyData;
 
     /// <summary>
-    /// µ•¿Ã≈Õ ∆ƒ¿œ ∞Ê∑Œ
+    /// Îç∞Ïù¥ÌÑ∞ ÌååÏùº Í≤ΩÎ°ú
     /// </summary>
     public const string DataFilePath = "Data/KeyData";
+
+    const string horizontal = "Horizontal";
+    const string vertical = "Vertical";
+
+    private Dictionary<string, AxisInput> AxisTable = new Dictionary<string, AxisInput>();
 
     #endregion
 
@@ -35,6 +40,40 @@ public class KeyboardController : Controller
             Debug.LogError("Can't load KeyData file");
             return;
         }
+        KeyInfo up = null, left = null, down = null, right = null;
+        foreach(var keyInfo in keyData.KeyInfos)
+        {
+            if (keyInfo.CommandType == InputManager.CommandType.Move)
+            {
+                MoveInputInfos.Add(keyInfo);
+                // ÏÉÅÌïòÏ¢åÏö∞ ÌÇ§Î•º Î∞îÏù∏ÎìúÌïúÎã§.
+                switch (keyInfo.MoveType)
+                {
+                    case InputManager.MoveType.Up:
+                        up = keyInfo;
+                        break;
+                    case InputManager.MoveType.Left:
+                        left = keyInfo;
+                        break;
+                    case InputManager.MoveType.Down:
+                        down = keyInfo;
+                        break;
+                    case InputManager.MoveType.Right:
+                        right = keyInfo;
+                        break;
+                }
+                
+            }
+            else
+                NonMoveInputInfos.Add(keyInfo);
+        }
+
+        if(up != null && left != null && down != null && right != null)
+        {
+            AxisTable.Add(horizontal, new AxisInput(left, right));
+            AxisTable.Add(vertical, new AxisInput(down, up));
+        }
+        
     }
 
     #endregion
@@ -44,54 +83,60 @@ public class KeyboardController : Controller
     public override void Update()
     {
         if (isRunning)
-            OnCheckInput();
+            OnCheckNonMoveInput();
     }
 
-    public override void OnCheckInput()
+    public override void FixedUpdate()
     {
-        foreach(var keyInfo in keyData.KeyInfos)
-        {
-            var keyCode = keyInfo.Code;
-            var keyBit = keyInfo.Index;
+        if (isRunning)
+            OnCheckMoveInput();
+    }
 
+    protected override void OnCheckMoveInput()
+    {
+        foreach (var inputInfo in MoveInputInfos)
+        {
+            KeyInfo keyInfo = (KeyInfo)inputInfo;            
+            var keyCode = keyInfo.Code;
+            keyInfo.IsPressed = Input.GetKeyDown(keyCode);
+            keyInfo.IsHolding = Input.GetKey(keyCode);
+            keyInfo.IsReleased = Input.GetKeyUp(keyCode);
+
+            if (AxisTable.ContainsKey(horizontal) && AxisTable.ContainsKey(vertical))
+            {
+                float x = AxisTable[horizontal].GetAxis();
+                float y = AxisTable[vertical].GetAxis();
+                OnMoveInput(keyInfo, x, y);
+            }
+
+        }
+    }
+
+    protected override void OnCheckNonMoveInput() 
+    {
+        foreach (var inputInfo in NonMoveInputInfos)
+        {
+            KeyInfo keyInfo = (KeyInfo)inputInfo;
+            var keyCode = keyInfo.Code;
+
+            keyInfo.IsPressed = Input.GetKeyDown(keyCode);
+            keyInfo.IsHolding = Input.GetKey(keyCode);
+            keyInfo.IsReleased = Input.GetKeyUp(keyCode);
+
+            if (Input.GetKeyDown(keyCode))
+            {
+                OnPressInput(keyInfo);
+            }
+            if (Input.GetKey(keyCode) && keyInfo.CanHolding)
+            {
+                OnKeepInput(keyInfo);
+            }
             if (Input.GetKeyUp(keyCode))
             {
                 OnReleaseInput(keyInfo);
             }
-            if (Input.GetKey(keyCode) && keyInfo.ContinuousCommand)
-            {
-                OnKeepInput(keyInfo);
-            }
-            if (Input.GetKeyDown(keyCode))
-            {
-                OnReleaseInput(keyInfo);
-            }
 
         }
-    }
-
-    protected override void OnPressInput(InputInfo inputInfo)
-    {
-         EventManager.Instance.PostNotification(inputInfo.EVENT_TYPE, GameManager.Player);
-    }
-
-    protected override void OnKeepInput(InputInfo inputInfo)
-    {
-        if (inputInfo.EVENT_TYPE == EVENT_TYPE.MOVE)
-        {
-            var h = Input.GetAxisRaw("Horizontal");
-            var v = Input.GetAxisRaw("Vertical");
-            EventManager.Instance.PostNotification(inputInfo.EVENT_TYPE, GameManager.Player, new object[] { h, v });
-        }
-        else
-        {
-            EventManager.Instance.PostNotification(inputInfo.EVENT_TYPE, GameManager.Player);
-        }
-    }
-
-    protected override void OnReleaseInput(InputInfo inputInfo)
-    {
-        
     }
 
     #endregion

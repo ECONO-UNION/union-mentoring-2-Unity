@@ -11,25 +11,36 @@ public class InputInfo
     protected string name;
 
     [SerializeField]
-    protected int index;
+    protected InputManager.CommandType commandType;
+    [SerializeField]
+    protected InputManager.MoveType moveType;
 
     [SerializeField]
-    protected EVENT_TYPE Event_Type;
-
-    [SerializeField]
-    protected bool _ContinuousCommand;
+    protected bool _canHolding;
 
     public string Name => name;
 
-    /// <summary>
-    /// 입력 상태를 판별하기 위한 비트 정수
-    /// </summary>
-    public int Index => index;
-
-    public EVENT_TYPE EVENT_TYPE => Event_Type;
+    public InputManager.CommandType CommandType => commandType;
+    public InputManager.MoveType MoveType => moveType;
 
     /// <summary>
-    /// 홀딩 상태를 유지할 수 있는지 판별하기 위한 변수
+    /// 특정 키가 최초 입력 상태
     /// </summary>
-    public bool ContinuousCommand => _ContinuousCommand;
+    [NonSerialized]
+    public bool IsPressed;
+    /// <summary>
+    /// 특정 키가 입력 중인 상태
+    /// </summary>
+    [NonSerialized]
+    public bool IsHolding;
+    /// <summary>
+    /// 특정 키를 뗀 상태
+    /// </summary>
+    [NonSerialized]
+    public bool IsReleased;
+
+    /// <summary>
+    /// 홀딩 상태를 유지할 수 있는지 판별
+    /// </summary>
+    public bool CanHolding => _canHolding;
 }

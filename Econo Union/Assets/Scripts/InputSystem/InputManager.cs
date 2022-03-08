@@ -1,4 +1,4 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
@@ -11,14 +11,14 @@ public class InputManager : MonoBehaviour
     private static InputManager instance;
 
     /// <summary>
-    /// ÇöÀç »ç¿ë ÁßÀÎ ÄÁÆ®·Ñ·¯ Å¸ÀÔ ¸®½ºÆ®
+    /// ì»¨íŠ¸ë¡¤ëŸ¬ íƒ€ì…ì— ë”°ë¥¸ Controller ê°ì²´ë¥¼ ë‹´ì€ ë”•ì…”ë„ˆë¦¬
     /// </summary>
-    public List<ControllerType> ControllerTypeList = new List<ControllerType>();
+    private static Dictionary<ControllerType, Controller> ControllerTable = new Dictionary<ControllerType, Controller>();
 
     /// <summary>
-    /// ÄÁÆ®·Ñ·¯ Å¸ÀÔ¿¡ µû¸¥ Controller °´Ã¼ µñ¼Å³Ê¸®
+    /// Mapper íƒ€ì…ì— ë”°ë¥¸ InputMapper ê°ì²´ë¥¼ ë‹´ì€ ë”•ì…”ë„ˆë¦¬
     /// </summary>
-    private Dictionary<ControllerType, Controller> ControllerTable = new Dictionary<ControllerType, Controller>();
+    private static Dictionary<MapperType, InputMapper> MapperTable = new Dictionary<MapperType, InputMapper>();
 
     #endregion
 
@@ -33,7 +33,7 @@ public class InputManager : MonoBehaviour
     #region Enums
 
     /// <summary>
-    /// ÀÔ·Â ÇÃ·§Æû Å¸ÀÔ
+    /// ì…ë ¥ í”Œë«í¼ íƒ€ì…
     /// </summary>
     [Flags]
     public enum ControllerType
@@ -58,6 +58,40 @@ public class InputManager : MonoBehaviour
         Release,
     }
 
+    /// <summary>
+    /// ë™ì‘í•˜ëŠ” InputMapperë¥¼ êµ¬ë¶„
+    /// </summary>
+    public enum MapperType
+    {
+        Player,
+        UI,
+        None,
+    }
+
+    /// <summary>
+    /// ì…ë ¥ í›„ ë™ì‘í•˜ëŠ” ëª…ë ¹ ìœ í˜•
+    /// </summary>
+    public enum CommandType
+    {
+        Move,
+        Attack,
+        Jump,
+        Escape,
+        Enter,
+    }
+
+    /// <summary>
+    /// ì´ë™ ì»¤ë§¨ë“œ ìœ í˜•
+    /// </summary>
+    public enum MoveType
+    {
+        None,
+        Left,
+        Right,
+        Up,
+        Down,
+    }
+
     #endregion
 
     #region Callbacks
@@ -75,6 +109,7 @@ public class InputManager : MonoBehaviour
     void Start()
     {
         CreateController();
+        CreateMapper();
     }
 
     void Update()
@@ -89,12 +124,24 @@ public class InputManager : MonoBehaviour
         }
     }
 
+    void FixedUpdate()
+    {
+        foreach (var controllerPair in ControllerTable)
+        {
+            Controller controller = controllerPair.Value;
+            if (controller.IsRunning)
+            {
+                controller.FixedUpdate();
+            }
+        }
+    }
+
     #endregion
 
     #region Methods
 
     /// <summary>
-    /// ¸ğµç ÄÁÆ®·Ñ·¯¸¦ »ı¼ºÇÏ´Â ¸Ş¼Òµå 
+    /// ëª¨ë“  ì»¨íŠ¸ë¡¤ëŸ¬ë¥¼ ìƒì„±í•˜ëŠ” ë©”ì†Œë“œ 
     /// </summary>
     private void CreateController()
     {
@@ -106,8 +153,15 @@ public class InputManager : MonoBehaviour
         ExecuteController();
     }
 
+    private void CreateMapper()
+    {
+        MapperTable.Add(MapperType.Player, new PlayerInput());
+        MapperTable.Add(MapperType.UI, new UIInput());
+        MapperTable.Add(MapperType.None, null);
+    }
+
     /// <summary>
-    /// ÇÃ·§Æûº°·Î ÄÁÆ®·Ñ·¯¸¦ ½ÇÇàÇÏµµ·Ï ÇÏ´Â ¸Ş¼Òµå
+    /// í”Œë«í¼ë³„ë¡œ ì»¨íŠ¸ë¡¤ëŸ¬ë¥¼ ì‹¤í–‰í•˜ë„ë¡ í•˜ëŠ” ë©”ì†Œë“œ
     /// </summary>
     public void ExecuteController()
     {
@@ -131,7 +185,7 @@ public class InputManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Æ¯Á¤ ÄÁÆ®·Ñ·¯¸¦ ½ÇÇàÇÏµµ·Ï ÇÏ´Â ¸Ş¼Òµå
+    /// íŠ¹ì • ì»¨íŠ¸ë¡¤ëŸ¬ë¥¼ ì‹¤í–‰í•˜ë„ë¡ í•˜ëŠ” ë©”ì†Œë“œ
     /// </summary>
     public void StartController(ControllerType controllerType)
     {
@@ -142,7 +196,7 @@ public class InputManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Æ¯Á¤ ÄÁÆ®·Ñ·¯¸¦ ÁßÁöÇÏµµ·Ï ÇÏ´Â ¸Ş¼Òµå
+    /// íŠ¹ì • ì»¨íŠ¸ë¡¤ëŸ¬ë¥¼ ì¤‘ì§€í•˜ë„ë¡ í•˜ëŠ” ë©”ì†Œë“œ
     /// </summary>
     public void StopController(ControllerType controllerType)
     {
@@ -151,6 +205,21 @@ public class InputManager : MonoBehaviour
         ControllerTable[controllerType].StopController();
     }
 
+    public static InputMapper SelectMapper(CommandType commandType)
+    {
+        switch (commandType)
+        {
+            case CommandType.Attack:
+            case CommandType.Jump:
+            case CommandType.Move:
+                return MapperTable[MapperType.Player];
+            case CommandType.Escape:
+            case CommandType.Enter:
+                return MapperTable[MapperType.UI];
+
+        }
+        return MapperTable[MapperType.None];
+    }
     #endregion
 }
 

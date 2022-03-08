@@ -14,32 +14,34 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   KeyInfos:
   - name: left
-    code: 276
-    index: 1
-    Event_Type: 2
+    commandType: 0
+    moveType: 0
     _ContinuousCommand: 1
-  - name: right
-    code: 275
-    index: 2
-    Event_Type: 2
-    _ContinuousCommand: 1
+    IsPressed: 0
+    IsHolding: 0
+    IsReleased: 0
+    code: 260
   - name: up
-    code: 273
-    index: 3
-    Event_Type: 2
+    commandType: 0
+    moveType: 2
     _ContinuousCommand: 1
+    IsPressed: 0
+    IsHolding: 0
+    IsReleased: 0
+    code: 264
+  - name: right
+    commandType: 0
+    moveType: 1
+    _ContinuousCommand: 1
+    IsPressed: 0
+    IsHolding: 0
+    IsReleased: 0
+    code: 262
   - name: down
-    code: 274
-    index: 4
-    Event_Type: 2
+    commandType: 0
+    moveType: 3
     _ContinuousCommand: 1
-  - name: attack
-    code: 122
-    index: 5
-    Event_Type: 0
-    _ContinuousCommand: 1
-  - name: jump
-    code: 32
-    index: 6
-    Event_Type: 1
-    _ContinuousCommand: 0
+    IsPressed: 0
+    IsHolding: 0
+    IsReleased: 0
+    code: 258
