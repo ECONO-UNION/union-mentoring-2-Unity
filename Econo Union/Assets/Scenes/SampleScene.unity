@@ -267,7 +267,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e648f7d1f3a5125428f41c31d74e0c94, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rigidbody: {fileID: 788684076}
+  _rigidbody: {fileID: 788684076}
 --- !u!212 &788684074
 SpriteRenderer:
   m_ObjectHideFlags: 0

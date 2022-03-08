@@ -15,33 +15,31 @@ MonoBehaviour:
   KeyInfos:
   - name: left
     commandType: 0
-    moveType: 0
-    _ContinuousCommand: 1
-    IsPressed: 0
-    IsHolding: 0
-    IsReleased: 0
+    moveType: 1
+    _canHolding: 0
     code: 260
   - name: up
     commandType: 0
-    moveType: 2
-    _ContinuousCommand: 1
-    IsPressed: 0
-    IsHolding: 0
-    IsReleased: 0
+    moveType: 3
+    _canHolding: 0
     code: 264
   - name: right
     commandType: 0
-    moveType: 1
-    _ContinuousCommand: 1
-    IsPressed: 0
-    IsHolding: 0
-    IsReleased: 0
+    moveType: 2
+    _canHolding: 0
     code: 262
   - name: down
     commandType: 0
-    moveType: 3
-    _ContinuousCommand: 1
-    IsPressed: 0
-    IsHolding: 0
-    IsReleased: 0
+    moveType: 4
+    _canHolding: 0
     code: 258
+  - name: attck
+    commandType: 1
+    moveType: 0
+    _canHolding: 0
+    code: 306
+  - name: jump
+    commandType: 2
+    moveType: 0
+    _canHolding: 1
+    code: 32
