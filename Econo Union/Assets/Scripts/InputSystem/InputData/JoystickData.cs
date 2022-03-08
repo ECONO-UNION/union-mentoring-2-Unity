@@ -9,7 +9,7 @@ public class JoystickInfo : InputInfo
 
 }
 
-[CreateAssetMenu(menuName = "InputData/KeyData")]
+[CreateAssetMenu(menuName = "InputData/JoystickData")]
 public class JoystickData : ScriptableObject
 {
     private List<JoystickInfo> joystickInfos;

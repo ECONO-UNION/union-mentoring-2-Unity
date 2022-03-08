@@ -9,7 +9,7 @@ public class TouchInfo : InputInfo
 
 }
 
-[CreateAssetMenu(menuName = "InputData/KeyData")]
+[CreateAssetMenu(menuName = "InputData/TouchData")]
 public class TouchData : ScriptableObject
 {
     private List<TouchInfo> touchInfos;

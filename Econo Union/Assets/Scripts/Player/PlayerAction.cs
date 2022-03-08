@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Easy.Events.Delegate;
+using Easy.Utils.Data;
 
 public partial class PlayerAction : MonoBehaviour
 {
@@ -14,10 +15,7 @@ public partial class PlayerAction : MonoBehaviour
 
     #region Callbacks
 
-    void Awake()
-    {
-        
-    }
+
 
     #endregion
 
