@@ -34,6 +34,8 @@ namespace Easy.InputSystem
 
             foreach (var keyInfo in keyData.KeyInfos)
             {
+                if (KeyTable.ContainsKey(keyInfo.KeyCode))
+                    Debug.LogError("KeyCode [" + keyInfo.KeyCode + "] : is duplicated");
                 KeyTable.Add(keyInfo.KeyCode, keyInfo);
             }
 
@@ -91,6 +93,7 @@ namespace Easy.InputSystem
         {
             
         }
+
         protected override void OnCheckNonAxisInput(InputInfo inputInfo)
         {
             if (inputInfo.IsPressed)

@@ -50,6 +50,8 @@ namespace Easy.InputSystem
             foreach (var joystickInfo in joystickData.JoystickInfos)
             {
                 KeyCode keyCode = GetJoystickKeyCode(joystickInfo.ButtonType);
+                if (KeyTable.ContainsKey(keyCode))
+                    Debug.LogError("Joystick KeyCode [" + keyCode + "] : is duplicated");
                 KeyTable.Add(keyCode, joystickInfo);
             }
 

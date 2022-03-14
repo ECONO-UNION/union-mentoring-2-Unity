@@ -34,6 +34,8 @@ namespace Easy.InputSystem
 
             foreach (var mouseInfo in mouseData.MouseInfos)
             {
+                if (ButtonTable.ContainsKey(mouseInfo.Button))
+                    Debug.LogError("Mouse Button [" + mouseInfo.Button + "] : is duplicated");
                 ButtonTable.Add(mouseInfo.Button, mouseInfo);
             }
 
