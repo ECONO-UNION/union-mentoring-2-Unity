@@ -74,12 +74,12 @@ namespace Easy.InputSystem
                 case RuntimePlatform.WindowsPlayer:
                     ActiveControllers.Add(new KeyboardController());
                     ActiveControllers.Add(new MouseController());
-                    CheckJoysticks();
                     break;
                 case RuntimePlatform.XboxOne:
                 case RuntimePlatform.PS4:
                 case RuntimePlatform.PS5:
                 case RuntimePlatform.Switch:
+                    CheckJoysticks();
                     break;
             }
 
