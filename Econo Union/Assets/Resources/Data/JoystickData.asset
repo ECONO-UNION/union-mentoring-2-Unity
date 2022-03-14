@@ -1,0 +1,39 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa22417111f3b3843999e5c0d4023a6f, type: 3}
+  m_Name: JoystickData
+  m_EditorClassIdentifier: 
+  joystickInfos:
+  - commandType: 3
+    axisType: 0
+    canHolding: 0
+    buttonType: 0
+  - commandType: 3
+    axisType: 0
+    canHolding: 0
+    buttonType: 1
+  - commandType: 0
+    axisType: 1
+    canHolding: 1
+    buttonType: 2
+  - commandType: 0
+    axisType: 2
+    canHolding: 1
+    buttonType: 3
+  - commandType: 0
+    axisType: 2
+    canHolding: 1
+    buttonType: 3
+  - commandType: 0
+    axisType: 2
+    canHolding: 1
+    buttonType: 3

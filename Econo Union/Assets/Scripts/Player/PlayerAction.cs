@@ -1,8 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Easy.Events.Delegate;
-
 public partial class PlayerAction : MonoBehaviour
 {
     #region Fields

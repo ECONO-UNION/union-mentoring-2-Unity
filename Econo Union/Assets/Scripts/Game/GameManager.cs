@@ -1,8 +1,7 @@
+using Easy.InputSystem;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Easy.Events.Delegate;
-
 public class GameManager : MonoBehaviour
 {
     #region Fields
@@ -22,7 +21,6 @@ public class GameManager : MonoBehaviour
         {
             Player = FindObjectOfType<PlayerAction>();
         }
-        gameObject.AddComponent<EventManager>();
         gameObject.AddComponent<InputManager>();
     }
 

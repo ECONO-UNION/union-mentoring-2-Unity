@@ -12,14 +12,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 915354d963d14c5488409aa78082b76f, type: 3}
   m_Name: MouseData
   m_EditorClassIdentifier: 
-  MouseInfos:
-  - name: Fire0
-    index: 0
-    commandType: 1
-    _ContinuousCommand: 1
-    code: 0
-  - name: Fire1
-    index: 0
-    commandType: 0
-    _ContinuousCommand: 0
-    code: 1
+  mouseInfos:
+  - commandType: 2
+    axisType: 0
+    canHolding: 0
+    button: 0
+  - commandType: 1
+    axisType: 0
+    canHolding: 0
+    button: 1
+  - commandType: 1
+    axisType: 0
+    canHolding: 0
+    button: 2
+  - commandType: 1
+    axisType: 0
+    canHolding: 0
+    button: 3
+  - commandType: 1
+    axisType: 0
+    canHolding: 0
+    button: 4

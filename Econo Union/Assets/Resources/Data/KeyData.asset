@@ -12,36 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2765ccc433791104c9798e349f0ba875, type: 3}
   m_Name: KeyData
   m_EditorClassIdentifier: 
-  KeyInfos:
-  - name: left
-    commandType: 0
-    moveType: 0
-    _ContinuousCommand: 1
-    IsPressed: 0
-    IsHolding: 0
-    IsReleased: 0
-    code: 260
-  - name: up
-    commandType: 0
-    moveType: 2
-    _ContinuousCommand: 1
-    IsPressed: 0
-    IsHolding: 0
-    IsReleased: 0
-    code: 264
-  - name: right
-    commandType: 0
-    moveType: 1
-    _ContinuousCommand: 1
-    IsPressed: 0
-    IsHolding: 0
-    IsReleased: 0
-    code: 262
-  - name: down
-    commandType: 0
-    moveType: 3
-    _ContinuousCommand: 1
-    IsPressed: 0
-    IsHolding: 0
-    IsReleased: 0
-    code: 258
+  keyInfos:
+  - commandType: 0
+    axisType: 3
+    canHolding: 1
+    keyCode: 273
+  - commandType: 1
+    axisType: 3
+    canHolding: 1
+    keyCode: 109
