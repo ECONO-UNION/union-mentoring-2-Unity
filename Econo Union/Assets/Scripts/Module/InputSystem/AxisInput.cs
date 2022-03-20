@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,47 +6,36 @@ namespace Easy.InputSystem
 {
     public class AxisInput
     {
-        private InputInfo _negative;
-        private InputInfo _positive;
-
-        public bool IsEmpty => _negative == null || _positive == null; 
-
+        private KeyState negative;
+        private KeyState positive;
         public AxisInput()
         {
-  
+
         }
 
-        public AxisInput(InputInfo negative, InputInfo positive)
+        public AxisInput(KeyState negative, KeyState positive)
         {
-            _negative = negative;
-            _positive = positive;
+            this.negative = negative;
+            this.positive = positive;
         }
 
-        public void SetNegative(InputInfo negative)
+        public void SetNegative(KeyState negative)
         {
-            _negative = negative;
+            this.negative = negative;
+        }
+        public void SetPositive(KeyState positive)
+        {
+            this.positive = positive;
         }
 
-        public void SetPositive(InputInfo positive)
+        public int GetAxis()
         {
-            _positive = positive;
-        }
+            if (negative == null || positive == null) return 0;
+           
+            if (negative.GetKey && !positive.GetKey) return -1;
+            if (!negative.GetKey && positive.GetKey) return 1;
 
-        public float GetAxis()
-        {
-            if (IsEmpty) return 0;
-
-            if (_negative.IsHolding && !_positive.IsHolding)
-                return -1;
-            else if (!_negative.IsHolding && !_positive.IsHolding)
-                return 0;
-            else if (_negative.IsHolding && _positive.IsHolding)
-                return 0;
-            else if (!_negative.IsHolding && _positive.IsHolding)
-                return 1;  
-            else
-                return 0;
+            else return 0;
         }
     }
-
 }

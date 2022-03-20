@@ -17,10 +17,6 @@ public class GameManager : MonoBehaviour
     {
         DontDestroyOnLoad(gameObject);
 
-        if(Player == null)
-        {
-            Player = FindObjectOfType<PlayerAction>();
-        }
         gameObject.AddComponent<InputManager>();
     }
 

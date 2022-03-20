@@ -1,35 +1,99 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-public partial class PlayerAction : MonoBehaviour
+using Easy.InputSystem;
+
+public abstract class PlayerAction
 {
-    #region Fields
+    protected PlayerComponent component;
 
-    [SerializeField]
-    Rigidbody2D _rigidbody;
+    public PlayerAction(PlayerComponent component)
+    {
+        this.component = component;
+    }
 
-    #endregion
+    public abstract void OnPressInputHandler();
 
-    #region Callbacks
+    public abstract void OnHoldingInputHandler();
 
-    void Awake()
+    public abstract void OnReleaseInputHandler();
+
+}
+
+public abstract class AxisAction
+{
+    protected PlayerComponent component;
+
+    public AxisAction(PlayerComponent component)
+    {
+        this.component = component;
+    }
+
+    public abstract void OnEvent(float x, float y);
+
+}
+
+public class AttackAction : PlayerAction
+{
+    public AttackAction(PlayerComponent component) : base(component)
+    {
+        this.component = component;
+    }
+
+    public override void OnHoldingInputHandler()
     {
         
     }
 
-    #endregion
-
-    #region Methods
-
-    public void Attack()
+    public override void OnPressInputHandler()
     {
-        Debug.Log("Attack");
+        
     }
 
-    public void Jump()
+    public override void OnReleaseInputHandler()
     {
-        Debug.Log("Jump");
+        
     }
 
-    #endregion
+}
+
+public class JumpAction : PlayerAction
+{
+    public JumpAction(PlayerComponent component) : base(component)
+    {
+        this.component = component;
+    }
+
+    public override void OnHoldingInputHandler()
+    {
+        
+    }
+
+    public override void OnPressInputHandler()
+    {
+        
+    }
+
+    public override void OnReleaseInputHandler()
+    {
+        
+    }
+
+}
+
+public class WalkAction : AxisAction
+{
+    float walkSpeed = 5f;
+
+    public WalkAction(PlayerComponent component) : base(component)
+    {
+        this.component = component;
+    }
+
+    public override void OnEvent(float x, float y)
+    {
+        Vector2 dir = new Vector2(x , y);
+        component._rigidbody.MovePosition(component._rigidbody.position + dir * Time.deltaTime * walkSpeed);
+    }
+   
 }

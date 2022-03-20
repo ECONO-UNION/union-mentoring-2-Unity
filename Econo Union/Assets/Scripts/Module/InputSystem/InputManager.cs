@@ -5,21 +5,23 @@ using System;
 
 namespace Easy.InputSystem
 {
-    /// <summary>
-    /// 입력 시스템은 Controller -> InputMapper -> 커맨드 수행 객체 순으로 처리된다.
-    /// 
-    /// 입력 시스템에서 Controller를 관리하는 클래스
-    /// </summary>
     public class InputManager : MonoBehaviour
     {
         #region Fields
 
         private static InputManager instance;
-     
+
         /// <summary>
-        /// 현재 실행 중인 Controller 리스트
+        /// 입력 데이터 파일 경로
         /// </summary>
-        private List<Controller> ActiveControllers;
+        private const string DataFilePath = "Data/InputData";
+
+        private InputData inputData;
+
+        /// <summary>
+        /// CommandType과 PlayerType별로 키 입력 상태를 저장한 테이블
+        /// </summary>
+        private Dictionary<CommandType, Dictionary<PlayerType, List<KeyState>>> KeyTable = new Dictionary<CommandType, Dictionary<PlayerType, List<KeyState>>>();
 
         #endregion
 
@@ -27,7 +29,19 @@ namespace Easy.InputSystem
 
         public static InputManager Instance
         {
-            get { return instance; }
+            get 
+            {
+                if (instance == null)
+                {
+                    instance = FindObjectOfType<InputManager>();
+                    if(instance == null)
+                    {
+                        instance = new GameObject(typeof(InputManager).Name).AddComponent<InputManager>();                     
+                    }
+                    return instance;
+                }
+                return instance;
+            }
         }
 
         #endregion
@@ -36,73 +50,61 @@ namespace Easy.InputSystem
 
         void Awake()
         {
-            if (instance == null)
+            inputData = Resources.Load<InputData>(DataFilePath);
+            if(inputData == null)
             {
-                instance = this;
+                Debug.LogError("Can't find InputData File");
             }
-            else
-                Destroy(this);
 
-            ActiveControllers = new List<Controller>();
-        }
+            DontDestroyOnLoad(gameObject);
 
-        void Start()
-        {
-            CreateController();
+            LoadTable();
         }
 
         void Update()
         {
-            foreach (var controller in ActiveControllers)
-            {              
-                controller.Update();
-            }
+            foreach(var playerTable in KeyTable)
+            {
+                foreach (var keyStateTable in playerTable.Value)
+                {
+                    foreach(var keyState in keyStateTable.Value)
+                    {
+                        keyState.GetKeyDown = Input.GetKeyDown(keyState.KeyCode);
+                        keyState.GetKey = Input.GetKey(keyState.KeyCode);
+                        keyState.GetKeyUp = Input.GetKeyUp(keyState.KeyCode);
+                    }
+                }
+                
+            }  
         }
 
         #endregion
 
         #region Methods
 
-        /// <summary>
-        /// 플랫폼에 해당하는 컨트롤러를 생성하는 메소드 
-        /// </summary>
-        private void CreateController()
+        private void LoadTable()
         {
-            switch (Application.platform)
+            foreach(var key in inputData.Keys)
             {
-                case RuntimePlatform.WindowsEditor:
-                case RuntimePlatform.WindowsPlayer:
-                    ActiveControllers.Add(new KeyboardController());
-                    ActiveControllers.Add(new MouseController());
-                    break;
-                case RuntimePlatform.XboxOne:
-                case RuntimePlatform.PS4:
-                case RuntimePlatform.PS5:
-                case RuntimePlatform.Switch:
-                    CheckJoysticks();
-                    break;
+                if (!KeyTable.ContainsKey(key.CommandType)) 
+                    KeyTable.Add(key.CommandType, new Dictionary<PlayerType, List<KeyState>>());
+                
+                if (!KeyTable[key.CommandType].ContainsKey(key.PlayerType))
+                    KeyTable[key.CommandType].Add(key.PlayerType, new List<KeyState>());
+                
+                KeyTable[key.CommandType][key.PlayerType].Add(new KeyState(key.KeyCode));
             }
-
         }
 
-        /// <summary>
-        /// 현재 연결 중인 조이스틱들을 확인 후 JoystickController 객체를 생성한다.
-        /// </summary>
-        private void CheckJoysticks()
+        public List<KeyState> GetTableData(CommandType commandType, PlayerType playerType = PlayerType.Player1)
         {
-            string[] joystickNames = Input.GetJoystickNames();
+            if (!KeyTable.ContainsKey(commandType)) return null;
+            if (!KeyTable[commandType].ContainsKey(playerType)) return null;
 
-            if (joystickNames.Length > 0)
-            {
-                for (int i = 0; i < joystickNames.Length; i++)
-                {
-                    ActiveControllers.Add(new JoystickController(joystickNames[i], i));
-                }
-            }
+            return KeyTable[commandType][playerType];
         }
 
         #endregion
     }
-
     
 }
