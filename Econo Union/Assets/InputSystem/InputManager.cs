@@ -22,11 +22,14 @@ namespace Easy.InputSystem
         /// CommandType과 PlayerType별로 키 입력 상태를 저장한 테이블
         /// </summary>
         private Dictionary<CommandType, Dictionary<PlayerType, List<KeyState>>> KeyCommandTable = new Dictionary<CommandType, Dictionary<PlayerType, List<KeyState>>>();
-
+       
         /// <summary>
         /// 각 키에 할당된 키 입력 상태를 저장한 테이블. 하나의 키에 여러 커맨드가 등록되지 않도록 확인한다.
         /// </summary>
         private Dictionary<KeyCode, KeyState> KeyTable = new Dictionary<KeyCode, KeyState>();
+
+        private MouseInput mouseInput;
+        
         #endregion
 
         #region Properties
@@ -47,11 +50,11 @@ namespace Easy.InputSystem
                 return instance;
             }
         }
+        public MouseInput MouseInput => mouseInput;
 
         #endregion
 
         #region Callbacks
-
         void Awake()
         {
             inputData = Resources.Load<InputData>(DataFilePath);
@@ -63,8 +66,8 @@ namespace Easy.InputSystem
             DontDestroyOnLoad(gameObject);
 
             LoadTable();
+            mouseInput = new MouseInput();
         }
-
         void Update()
         {
             foreach(var playerTable in KeyCommandTable)
@@ -79,13 +82,13 @@ namespace Easy.InputSystem
                     }
                 }
                 
-            }  
+            }
+            mouseInput.Update();
         }
 
         #endregion
 
         #region Methods
-
         private void LoadTable()
         {
             foreach(var key in inputData.Keys)
@@ -107,7 +110,6 @@ namespace Easy.InputSystem
                 KeyCommandTable[key.CommandType][key.PlayerType].Add(keyState);
             }
         }
-
         public List<KeyState> GetTableData(CommandType commandType, PlayerType playerType)
         {
             if (!KeyCommandTable.ContainsKey(commandType)) return null;

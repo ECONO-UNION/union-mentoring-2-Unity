@@ -57,70 +57,74 @@ namespace Easy.InputSystem
         }
 
         void OnGUI()
-        {
-            
+        {         
             GUILayout.Label("Input System Settings", EditorStyles.boldLabel);
-
-            GUILayout.Label("\nPlayerType List", EditorStyles.boldLabel);
-            GUILayout.Label("----------");
-            ShowPlayerTypeList();
-            GUILayout.Label("----------");
-            // PlayerType 추가/삭제 기능
-            addPlayer = EditorGUILayout.TextField("Add PlayerType: ", addPlayer);
-            if (GUILayout.Button("Add"))
+            // PlayerType 관리 구역
             {
-                if (!addPlayer.Equals(""))
-                    playerTypeNameList.Add(addPlayer);
-                addPlayer = "";
+                GUILayout.Label("\nPlayerType List", EditorStyles.boldLabel);
+                GUILayout.Label("----------");
+                ShowPlayerTypeList();
+                GUILayout.Label("----------");
+                // PlayerType 추가/삭제 기능
+                addPlayer = EditorGUILayout.TextField("Add PlayerType: ", addPlayer);
+                if (GUILayout.Button("Add"))
+                {
+                    if (!addPlayer.Equals(""))
+                        playerTypeNameList.Add(addPlayer);
+                    addPlayer = "";
+                }
+                removePlayer = EditorGUILayout.TextField("Remove PlayerType: ", removePlayer);
+                if (GUILayout.Button("Remove"))
+                {
+                    if (playerTypeNameList.Contains(removePlayer))
+                        playerTypeNameList.Remove(removePlayer);
+                    removePlayer = "";
+                }
             }
-            removePlayer = EditorGUILayout.TextField("Remove PlayerType: ", removePlayer);
-            if (GUILayout.Button("Remove"))
+            // ControllerType 관리 구역
             {
-                if (playerTypeNameList.Contains(removePlayer))
-                    playerTypeNameList.Remove(removePlayer);
-                removePlayer = "";
+                GUILayout.Label("\nControllerType List", EditorStyles.boldLabel);
+                GUILayout.Label("----------");
+                ShowControllerTypeList();
+                GUILayout.Label("----------");
+                // ControllerType 추가/삭제 기능
+                addController = EditorGUILayout.TextField("Add ControllerType: ", addController);
+                if (GUILayout.Button("Add"))
+                {
+                    if (!addController.Equals(""))
+                        controllerTypeNameList.Add(addController);
+                    addController = "";
+                }
+                removeController = EditorGUILayout.TextField("Remove ControllerType: ", removeController);
+                if (GUILayout.Button("Remove"))
+                {
+                    if (controllerTypeNameList.Contains(removeController))
+                        controllerTypeNameList.Remove(removeController);
+                    removeController = "";
+                }
             }
-
-            GUILayout.Label("\nControllerType List", EditorStyles.boldLabel);
-            GUILayout.Label("----------");
-            ShowControllerTypeList();
-            GUILayout.Label("----------");
-            // ControllerType 추가/삭제 기능
-            addController = EditorGUILayout.TextField("Add ControllerType: ", addController);
-            if (GUILayout.Button("Add"))
+            // CommandType 관리 구역
             {
-                if (!addController.Equals(""))
-                    controllerTypeNameList.Add(addController);
-                addController = "";
+                GUILayout.Label("\nCommandType List", EditorStyles.boldLabel);
+                GUILayout.Label("----------");
+                ShowCommandTypeList();
+                GUILayout.Label("----------");
+                // CommandType 추가/삭제 기능
+                addCommand = EditorGUILayout.TextField("Add ControllerType: ", addCommand);
+                if (GUILayout.Button("Add"))
+                {
+                    if (!addCommand.Equals(""))
+                        commandTypeNameList.Add(addCommand);
+                    addCommand = "";
+                }
+                removeCommand = EditorGUILayout.TextField("Remove ControllerType: ", removeCommand);
+                if (GUILayout.Button("Remove"))
+                {
+                    if (commandTypeNameList.Contains(removeCommand))
+                        commandTypeNameList.Remove(removeCommand);
+                    removeCommand = "";
+                }
             }
-            removeController = EditorGUILayout.TextField("Remove ControllerType: ", removeController);
-            if (GUILayout.Button("Remove"))
-            {
-                if (controllerTypeNameList.Contains(removeController))
-                    controllerTypeNameList.Remove(removeController);
-                removeController = "";
-            }
-
-            GUILayout.Label("\nCommandType List", EditorStyles.boldLabel);
-            GUILayout.Label("----------");
-            ShowCommandTypeList();
-            GUILayout.Label("----------");
-            // CommandType 추가/삭제 기능
-            addCommand = EditorGUILayout.TextField("Add ControllerType: ", addCommand);
-            if (GUILayout.Button("Add"))
-            {
-                if (!addCommand.Equals(""))
-                    commandTypeNameList.Add(addCommand);
-                addCommand = "";
-            }
-            removeCommand = EditorGUILayout.TextField("Remove ControllerType: ", removeCommand);
-            if (GUILayout.Button("Remove"))
-            {
-                if (commandTypeNameList.Contains(removeCommand))
-                    commandTypeNameList.Remove(removeCommand);
-                removeCommand = "";
-            }
-
             GUILayout.Label("\n");
  
             if (GUILayout.Button("Apply"))
@@ -130,7 +134,6 @@ namespace Easy.InputSystem
             }
             
         }
-
         void ShowPlayerTypeList()
         {
             for (int i = 0; i < playerTypeNameList.Count; i++)
@@ -138,7 +141,6 @@ namespace Easy.InputSystem
                 GUILayout.Label(playerTypeNameList[i]);
             }
         }
-
         void ShowControllerTypeList()
         {
             for (int i = 0; i < controllerTypeNameList.Count; i++)
@@ -146,7 +148,6 @@ namespace Easy.InputSystem
                 GUILayout.Label(controllerTypeNameList[i]);
             }
         }
-
         void ShowCommandTypeList()
         {
             for (int i = 0; i < commandTypeNameList.Count; i++)
@@ -154,7 +155,6 @@ namespace Easy.InputSystem
                 GUILayout.Label(commandTypeNameList[i]);
             }
         }
-
         void CreateEnums()
         {
             StringBuilder sb = new StringBuilder();
@@ -167,7 +167,6 @@ namespace Easy.InputSystem
                 sb.AppendLine("        " + playerTypeNameList[i] + ",");
             }
             sb.AppendLine("    }");
-            sb.AppendLine("\n");
             sb.AppendLine("    public enum ControllerType");
             sb.AppendLine("    {");
             for (int i = 0; i < controllerTypeNameList.Count; i++)
@@ -175,7 +174,6 @@ namespace Easy.InputSystem
                 sb.AppendLine("        " + controllerTypeNameList[i] + ",");
             }
             sb.AppendLine("    }");
-            sb.AppendLine("\n");
             sb.AppendLine("    public enum CommandType");
             sb.AppendLine("    {");
             for (int i = 0; i < commandTypeNameList.Count; i++)
@@ -187,7 +185,6 @@ namespace Easy.InputSystem
 
             string path = Application.dataPath + "/InputSystem/SystemTool.cs";
             File.WriteAllText(path, sb.ToString());
-
         }
 
     }

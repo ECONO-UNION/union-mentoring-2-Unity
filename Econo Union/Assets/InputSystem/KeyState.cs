@@ -6,17 +6,17 @@ namespace Easy.InputSystem
 {
     public class KeyState
     {
-        public bool GetKeyDown { get; set; }
+        public bool GetKeyDown;
 
-        public bool GetKey { get; set; }
+        public bool GetKey;
 
-        public bool GetKeyUp { get; set; }
+        public bool GetKeyUp;
 
-        public KeyCode KeyCode { get; private set; }
-
+        private KeyCode keyCode;
+        public KeyCode KeyCode => keyCode;
         public KeyState(KeyCode keyCode)
         {
-            KeyCode = keyCode;
+            this.keyCode = keyCode;
         }
     }
 }

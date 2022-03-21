@@ -45,3 +45,11 @@ MonoBehaviour:
     playerType: 0
     commandType: 4
     keyCode: 258
+  - controllerType: 0
+    playerType: 0
+    commandType: 5
+    keyCode: 265
+  - controllerType: 0
+    playerType: 0
+    commandType: 5
+    keyCode: 53

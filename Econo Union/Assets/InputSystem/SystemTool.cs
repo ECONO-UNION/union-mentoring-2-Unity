@@ -5,15 +5,11 @@ namespace Easy.InputSystem
         Player1,
         Player2,
     }
-
-
     public enum ControllerType
     {
         Keyboard,
         Mouse,
     }
-
-
     public enum CommandType
     {
         None,
