@@ -2,26 +2,30 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MouseInput
+namespace Easy.InputSystem
 {
-    private Vector3 mousePosition;
-
-    private float axisX;
-
-    private float axisY;
-
-    public Vector3 MousePosition => mousePosition;
-
-    public float AxisX => axisX;
-
-    public float AxisY => axisY;
-
-    public void Update()
+    public class MouseInput
     {
-        mousePosition = Input.mousePosition;
+        private Vector3 mousePosition;
 
-        axisX = Input.GetAxis("Mouse X");
-        axisY = Input.GetAxis("Mouse Y");
+        private float axisX;
+
+        private float axisY;
+
+        public Vector3 MousePosition => mousePosition;
+
+        public float GetAxisX => axisX;
+
+        public float GetAxisY => axisY;
+
+        public void Update()
+        {
+            mousePosition = Input.mousePosition;
+
+            axisX = Input.GetAxis("Mouse X");
+            axisY = Input.GetAxis("Mouse Y");
+        }
+
+
     }
-
 }
