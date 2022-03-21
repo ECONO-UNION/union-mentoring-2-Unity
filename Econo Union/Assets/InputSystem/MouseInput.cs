@@ -9,9 +9,13 @@ public class MouseInput
     private float axisX;
 
     private float axisY;
+
     public Vector3 MousePosition => mousePosition;
+
     public float AxisX => axisX;
+
     public float AxisY => axisY;
+
     public void Update()
     {
         mousePosition = Input.mousePosition;

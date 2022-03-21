@@ -1,4 +1,4 @@
-using System.Collections;
+Ôªøusing System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
@@ -59,13 +59,14 @@ namespace Easy.InputSystem
         void OnGUI()
         {         
             GUILayout.Label("Input System Settings", EditorStyles.boldLabel);
-            // PlayerType ∞¸∏Æ ±∏ø™
+
+            // PlayerType Í¥ÄÎ¶¨ Íµ¨Ïó≠
             {
                 GUILayout.Label("\nPlayerType List", EditorStyles.boldLabel);
                 GUILayout.Label("----------");
                 ShowPlayerTypeList();
                 GUILayout.Label("----------");
-                // PlayerType √ﬂ∞°/ªË¡¶ ±‚¥…
+                // PlayerType Ï∂îÍ∞Ä/ÏÇ≠Ï†ú Í∏∞Îä•
                 addPlayer = EditorGUILayout.TextField("Add PlayerType: ", addPlayer);
                 if (GUILayout.Button("Add"))
                 {
@@ -81,13 +82,14 @@ namespace Easy.InputSystem
                     removePlayer = "";
                 }
             }
-            // ControllerType ∞¸∏Æ ±∏ø™
+
+            // ControllerType Í¥ÄÎ¶¨ Íµ¨Ïó≠
             {
                 GUILayout.Label("\nControllerType List", EditorStyles.boldLabel);
                 GUILayout.Label("----------");
                 ShowControllerTypeList();
                 GUILayout.Label("----------");
-                // ControllerType √ﬂ∞°/ªË¡¶ ±‚¥…
+                // ControllerType Ï∂îÍ∞Ä/ÏÇ≠Ï†ú Í∏∞Îä•
                 addController = EditorGUILayout.TextField("Add ControllerType: ", addController);
                 if (GUILayout.Button("Add"))
                 {
@@ -103,13 +105,14 @@ namespace Easy.InputSystem
                     removeController = "";
                 }
             }
-            // CommandType ∞¸∏Æ ±∏ø™
+
+            // CommandType Í¥ÄÎ¶¨ Íµ¨Ïó≠
             {
                 GUILayout.Label("\nCommandType List", EditorStyles.boldLabel);
                 GUILayout.Label("----------");
                 ShowCommandTypeList();
                 GUILayout.Label("----------");
-                // CommandType √ﬂ∞°/ªË¡¶ ±‚¥…
+                // CommandType Ï∂îÍ∞Ä/ÏÇ≠Ï†ú Í∏∞Îä•
                 addCommand = EditorGUILayout.TextField("Add ControllerType: ", addCommand);
                 if (GUILayout.Button("Add"))
                 {
@@ -125,15 +128,16 @@ namespace Easy.InputSystem
                     removeCommand = "";
                 }
             }
+
             GUILayout.Label("\n");
- 
             if (GUILayout.Button("Apply"))
             {
-                // Enum¿ª ∆˜«‘«œ¥¬ Ω∫≈©∏≥∆Æ ª˝º∫
+                // EnumÏùÑ Ìè¨Ìï®ÌïòÎäî Ïä§ÌÅ¨Î¶ΩÌä∏ ÏÉùÏÑ±
                 CreateEnums();
             }
             
         }
+
         void ShowPlayerTypeList()
         {
             for (int i = 0; i < playerTypeNameList.Count; i++)
@@ -141,6 +145,7 @@ namespace Easy.InputSystem
                 GUILayout.Label(playerTypeNameList[i]);
             }
         }
+
         void ShowControllerTypeList()
         {
             for (int i = 0; i < controllerTypeNameList.Count; i++)
@@ -148,6 +153,7 @@ namespace Easy.InputSystem
                 GUILayout.Label(controllerTypeNameList[i]);
             }
         }
+
         void ShowCommandTypeList()
         {
             for (int i = 0; i < commandTypeNameList.Count; i++)
@@ -155,6 +161,7 @@ namespace Easy.InputSystem
                 GUILayout.Label(commandTypeNameList[i]);
             }
         }
+
         void CreateEnums()
         {
             StringBuilder sb = new StringBuilder();
@@ -167,6 +174,7 @@ namespace Easy.InputSystem
                 sb.AppendLine("        " + playerTypeNameList[i] + ",");
             }
             sb.AppendLine("    }");
+            sb.AppendLine("\n");
             sb.AppendLine("    public enum ControllerType");
             sb.AppendLine("    {");
             for (int i = 0; i < controllerTypeNameList.Count; i++)
@@ -174,6 +182,7 @@ namespace Easy.InputSystem
                 sb.AppendLine("        " + controllerTypeNameList[i] + ",");
             }
             sb.AppendLine("    }");
+            sb.AppendLine("\n");
             sb.AppendLine("    public enum CommandType");
             sb.AppendLine("    {");
             for (int i = 0; i < commandTypeNameList.Count; i++)

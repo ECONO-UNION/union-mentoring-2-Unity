@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerComponent
 {
     public Rigidbody2D _rigidbody;
+
     public Transform _transform;
 
     public PlayerComponent(Rigidbody2D rigidbody, Transform transform)
@@ -12,6 +13,7 @@ public class PlayerComponent
         _rigidbody = rigidbody;
         _transform = transform;
     }
+
 }
 
 public class PlayerController : MonoBehaviour
@@ -22,6 +24,7 @@ public class PlayerController : MonoBehaviour
     Transform _transform;
 
     public PlayerAction AttackAction { get; private set; }
+
     public AxisAction WalkAction { get; private set; }
     
     void Awake()
@@ -31,4 +34,5 @@ public class PlayerController : MonoBehaviour
         AttackAction = new AttackAction(playerComponent);
         WalkAction = new WalkAction(playerComponent); 
     }
+
 }

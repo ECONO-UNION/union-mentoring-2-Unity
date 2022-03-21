@@ -9,16 +9,24 @@ namespace Easy.InputSystem
     {
         [SerializeField]
         private ControllerType controllerType;
+
         [SerializeField]
         private PlayerType playerType;
+
         [SerializeField]
         private CommandType commandType;
+
         [SerializeField]
         private KeyCode keyCode;
+
         public ControllerType ControllerType => controllerType;
+
         public PlayerType PlayerType => playerType;
+
         public CommandType CommandType => commandType;
+
         public KeyCode KeyCode => keyCode;
+
     }
 
     [CreateAssetMenu(menuName = "InputSystem/InputData")]
@@ -26,6 +34,7 @@ namespace Easy.InputSystem
     {
         [SerializeField]
         private List<Key> keys;
+
         public List<Key> Keys => keys;
     }
 }

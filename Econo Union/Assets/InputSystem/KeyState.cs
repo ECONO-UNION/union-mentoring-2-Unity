@@ -13,10 +13,13 @@ namespace Easy.InputSystem
         public bool GetKeyUp;
 
         private KeyCode keyCode;
+
         public KeyCode KeyCode => keyCode;
+
         public KeyState(KeyCode keyCode)
         {
             this.keyCode = keyCode;
         }
+
     }
 }

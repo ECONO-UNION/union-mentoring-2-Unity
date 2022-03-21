@@ -3,13 +3,16 @@ namespace Easy.InputSystem
     public enum PlayerType
     {
         Player1,
-        Player2,
     }
+
+
     public enum ControllerType
     {
         Keyboard,
         Mouse,
     }
+
+
     public enum CommandType
     {
         None,

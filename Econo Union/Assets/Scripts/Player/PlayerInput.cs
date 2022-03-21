@@ -41,6 +41,7 @@ public class PlayerInput : MonoBehaviour
             var playerAction = keyValuePair.Value;
             var keyStateList = InputManager.Instance.GetTableData(commandType, playerType);
             if (keyStateList == null) continue;
+
             foreach (var keyState in keyStateList)
             {
                 if (keyState.GetKeyDown) playerAction.OnPressInputHandler();
@@ -74,21 +75,27 @@ public class PlayerInput : MonoBehaviour
         {
             AxisInputList.Add(new Tuple<AxisInput, AxisInput>(new AxisInput(), new AxisInput()));
         }
+
         for (int i = 0; i < leftStates.Count; i++)
         {
             AxisInputList[i].Item1.SetNegative(leftStates[i]);
         }
+
         for (int i = 0; i < rightStates.Count; i++)
         {
             AxisInputList[i].Item1.SetPositive(rightStates[i]);
         }
+
         for (int i = 0; i < upStates.Count; i++)
         {
             AxisInputList[i].Item2.SetPositive(upStates[i]);
         }
+
         for (int i = 0; i < downStates.Count; i++)
         {
             AxisInputList[i].Item2.SetNegative(downStates[i]);
         }
+
     }
+
 }

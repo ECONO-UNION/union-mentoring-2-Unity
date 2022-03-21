@@ -50,6 +50,7 @@ namespace Easy.InputSystem
                 return instance;
             }
         }
+
         public MouseInput MouseInput => mouseInput;
 
         #endregion
@@ -68,6 +69,7 @@ namespace Easy.InputSystem
             LoadTable();
             mouseInput = new MouseInput();
         }
+
         void Update()
         {
             foreach(var playerTable in KeyCommandTable)
@@ -89,6 +91,7 @@ namespace Easy.InputSystem
         #endregion
 
         #region Methods
+
         private void LoadTable()
         {
             foreach(var key in inputData.Keys)
@@ -110,6 +113,7 @@ namespace Easy.InputSystem
                 KeyCommandTable[key.CommandType][key.PlayerType].Add(keyState);
             }
         }
+
         public List<KeyState> GetTableData(CommandType commandType, PlayerType playerType)
         {
             if (!KeyCommandTable.ContainsKey(commandType)) return null;
