@@ -4,32 +4,6 @@ using UnityEngine;
 
 namespace Easy.InputSystem
 {
-    public enum CommandType
-    {
-        None,
-        Axis_Left, Axis_Right, Axis_Up, Axis_Down,
-        Move,
-
-        Attack,
-        Jump,
-
-        Cancel,
-        Submit,
-    }
-
-    public enum ControllerType
-    {
-        Keyboard,
-        Mouse,
-        Joystick,
-    }
-
-    public enum PlayerType
-    {
-        Player1,
-        Player2,
-    }
-
     [System.Serializable]
     public class Key
     {

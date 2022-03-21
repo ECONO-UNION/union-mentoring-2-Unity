@@ -29,3 +29,19 @@ MonoBehaviour:
     playerType: 0
     commandType: 4
     keyCode: 274
+  - controllerType: 0
+    playerType: 0
+    commandType: 1
+    keyCode: 260
+  - controllerType: 0
+    playerType: 0
+    commandType: 2
+    keyCode: 262
+  - controllerType: 0
+    playerType: 0
+    commandType: 3
+    keyCode: 264
+  - controllerType: 0
+    playerType: 0
+    commandType: 4
+    keyCode: 258

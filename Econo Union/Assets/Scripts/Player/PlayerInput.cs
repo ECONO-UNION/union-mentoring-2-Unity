@@ -27,7 +27,6 @@ public class PlayerInput : MonoBehaviour
     void Start()
     {
         InitAxis();
-
         ActionTable.Add(CommandType.Attack, PlayerController.AttackAction);
 
         WalkAction = PlayerController.WalkAction;

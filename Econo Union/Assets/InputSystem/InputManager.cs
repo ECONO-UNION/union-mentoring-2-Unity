@@ -21,8 +21,12 @@ namespace Easy.InputSystem
         /// <summary>
         /// CommandType과 PlayerType별로 키 입력 상태를 저장한 테이블
         /// </summary>
-        private Dictionary<CommandType, Dictionary<PlayerType, List<KeyState>>> KeyTable = new Dictionary<CommandType, Dictionary<PlayerType, List<KeyState>>>();
+        private Dictionary<CommandType, Dictionary<PlayerType, List<KeyState>>> KeyCommandTable = new Dictionary<CommandType, Dictionary<PlayerType, List<KeyState>>>();
 
+        /// <summary>
+        /// 각 키에 할당된 키 입력 상태를 저장한 테이블. 하나의 키에 여러 커맨드가 등록되지 않도록 확인한다.
+        /// </summary>
+        private Dictionary<KeyCode, KeyState> KeyTable = new Dictionary<KeyCode, KeyState>();
         #endregion
 
         #region Properties
@@ -63,7 +67,7 @@ namespace Easy.InputSystem
 
         void Update()
         {
-            foreach(var playerTable in KeyTable)
+            foreach(var playerTable in KeyCommandTable)
             {
                 foreach (var keyStateTable in playerTable.Value)
                 {
@@ -86,22 +90,30 @@ namespace Easy.InputSystem
         {
             foreach(var key in inputData.Keys)
             {
-                if (!KeyTable.ContainsKey(key.CommandType)) 
-                    KeyTable.Add(key.CommandType, new Dictionary<PlayerType, List<KeyState>>());
+                if (KeyTable.ContainsKey(key.KeyCode))
+                {
+                    Debug.LogError("[" + key.KeyCode + "] is duplicated");
+                    return;
+                }
+
+                if (!KeyCommandTable.ContainsKey(key.CommandType)) 
+                    KeyCommandTable.Add(key.CommandType, new Dictionary<PlayerType, List<KeyState>>());
                 
-                if (!KeyTable[key.CommandType].ContainsKey(key.PlayerType))
-                    KeyTable[key.CommandType].Add(key.PlayerType, new List<KeyState>());
-                
-                KeyTable[key.CommandType][key.PlayerType].Add(new KeyState(key.KeyCode));
+                if (!KeyCommandTable[key.CommandType].ContainsKey(key.PlayerType))
+                    KeyCommandTable[key.CommandType].Add(key.PlayerType, new List<KeyState>());
+
+                KeyState keyState = new KeyState(key.KeyCode);
+                KeyTable.Add(key.KeyCode, keyState);
+                KeyCommandTable[key.CommandType][key.PlayerType].Add(keyState);
             }
         }
 
-        public List<KeyState> GetTableData(CommandType commandType, PlayerType playerType = PlayerType.Player1)
+        public List<KeyState> GetTableData(CommandType commandType, PlayerType playerType)
         {
-            if (!KeyTable.ContainsKey(commandType)) return null;
-            if (!KeyTable[commandType].ContainsKey(playerType)) return null;
+            if (!KeyCommandTable.ContainsKey(commandType)) return null;
+            if (!KeyCommandTable[commandType].ContainsKey(playerType)) return null;
 
-            return KeyTable[commandType][playerType];
+            return KeyCommandTable[commandType][playerType];
         }
 
         #endregion

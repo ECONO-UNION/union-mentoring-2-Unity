@@ -42,7 +42,7 @@ public class AttackAction : PlayerAction
 
     public override void OnHoldingInputHandler()
     {
-        
+
     }
 
     public override void OnPressInputHandler()
