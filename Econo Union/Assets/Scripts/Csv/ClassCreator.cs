@@ -34,9 +34,12 @@ namespace Easy.Data
             string path = $"{Application.dataPath}/Scripts/Csv/Data/{className}.cs";           
             if (!File.Exists(path))
             {
-                File.Create(path);
+                FileStream file = File.Create(path);
+                file.Close();
             }
-            File.WriteAllText(path, CreateStringBuilder(className).ToString());
+            
+            StringBuilder stringBuilder = CreateStringBuilder(className);
+            File.WriteAllText(path, stringBuilder.ToString());
         }
 
         private static StringBuilder CreateStringBuilder(string className)
