@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
+using UnityEditor;
 using UnityEngine;
 
 namespace Easy.Data
@@ -23,7 +24,7 @@ namespace Easy.Data
             foreach (var name in nameList)
             {
                 CreateClass(name);
-            }
+            }           
         }
 
         /// <summary>
@@ -31,15 +32,18 @@ namespace Easy.Data
         /// </summary>
         private static void CreateClass(string className)
         {
-            string path = $"{Application.dataPath}/Scripts/Csv/Data/{className}.cs";           
-            if (!File.Exists(path))
+            string directoryPath = $"{Application.dataPath}/Scripts/Csv/Data/";
+            string IDataPath = $"{directoryPath}IData.cs";
+            string classPath = $"{directoryPath}{className}.cs";
+
+            if (!Directory.Exists(directoryPath))
             {
-                FileStream file = File.Create(path);
-                file.Close();
+                Directory.CreateDirectory(directoryPath);
+                CreateIData(IDataPath);
             }
-            
-            StringBuilder stringBuilder = CreateStringBuilder(className);
-            File.WriteAllText(path, stringBuilder.ToString());
+
+            StringBuilder classStringBuilder = CreateStringBuilder(className);
+            File.WriteAllText(classPath, classStringBuilder.ToString());
         }
 
         private static StringBuilder CreateStringBuilder(string className)
@@ -57,13 +61,27 @@ namespace Easy.Data
 
             for (int i = 1; i < fieldnames.Length && i < fieldTypes.Length; i++)
             {
-                stringBuilder.AppendLine($"        public {fieldTypes[i]} {fieldnames[i]} {{ get; set; }}");
+                stringBuilder.AppendLine($"        public {fieldTypes[i]} {fieldnames[i]} {{ get; private set; }}");
             }
             stringBuilder.AppendLine("    }");
             stringBuilder.AppendLine();
             stringBuilder.AppendLine("}");
 
             return stringBuilder;
+        }
+
+        private static void CreateIData(string path)
+        {
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.AppendLine("// 본 스크립트는 Editor에 의해 자동으로 작성되었습니다.");
+            stringBuilder.AppendLine("namespace Easy.Data");
+            stringBuilder.AppendLine("{");
+            stringBuilder.AppendLine("    public interface IData");
+            stringBuilder.AppendLine("    {");
+            stringBuilder.AppendLine("    }");
+            stringBuilder.AppendLine("}");
+
+            File.WriteAllText(path, stringBuilder.ToString());
         }
     }
 }
