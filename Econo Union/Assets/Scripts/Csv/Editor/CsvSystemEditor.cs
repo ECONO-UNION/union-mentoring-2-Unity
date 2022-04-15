@@ -22,6 +22,7 @@ namespace Easy.Data.Editor
             if (GUILayout.Button("Create"))
             {
                 ClassCreator.CreateAll();
+                AssetDatabase.Refresh();
             }
         }
 
