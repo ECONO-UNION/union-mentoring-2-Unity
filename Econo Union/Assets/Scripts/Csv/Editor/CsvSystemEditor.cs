@@ -7,7 +7,7 @@ namespace Easy.Data.Editor
 {
     public class CsvSystemEditor : EditorWindow
     {
-        [MenuItem("Custom Window/Data/CSV Setting")]
+        [MenuItem("Custom Window/CSV Setting")]
         static void ShowWindow()
         {
             CsvSystemEditor window = (CsvSystemEditor)GetWindow(typeof(CsvSystemEditor));

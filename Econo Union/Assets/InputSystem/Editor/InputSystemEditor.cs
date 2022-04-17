@@ -28,7 +28,7 @@ namespace Easy.InputSystem
             InitList();
         }
 
-        [MenuItem("CustomWindow/Input System Setting")]
+        [MenuItem("Custom Window/Input System Setting")]
         static void ShowWindow()
         {
             InputSystemEditor window = (InputSystemEditor)GetWindow(typeof(InputSystemEditor));

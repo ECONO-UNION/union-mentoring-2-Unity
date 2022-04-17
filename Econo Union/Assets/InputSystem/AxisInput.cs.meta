@@ -1,9 +1,5 @@
 fileFormatVersion: 2
-<<<<<<<< HEAD:Econo Union/Assets/Scripts/Csv/DataManager.cs.meta
-guid: aa78e8fa09b054e4b932d66145884086
-========
-guid: 4f342b010fbe5eb49b2cb9fa73ef49ef
->>>>>>>> 3148168c5da94c76a18c3f8427e2ebe2e85f6dcd:Econo Union/Assets/InputSystem/AxisInput.cs.meta
+guid: e9d39ef69f89a7a4ab9c9648bb6a8720
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
